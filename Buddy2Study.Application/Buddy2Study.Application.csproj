@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Buddy2Study.Domain\Buddy2Study.Domain.csproj" />
+    <ProjectReference Include="..\Buddy2Study.Infrastructure\Buddy2Study.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Mappings\" />
+  </ItemGroup>
+
+</Project>

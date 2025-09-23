@@ -1,0 +1,6 @@
+@Buddy2Study.Api_HostAddress = http://localhost:5081
+
+GET {{Buddy2Study.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
