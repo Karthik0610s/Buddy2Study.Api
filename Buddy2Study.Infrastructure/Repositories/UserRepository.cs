@@ -36,7 +36,7 @@ namespace Buddy2Study.Infrastructure.Repositories
 
         public async Task<Users> InsertUserDetails(Users users)
         {
-            var spName = SPNames.SP_INSERTUSER; // Name of your stored procedure
+            var spName = SPNames.SP_INSERTSTUDENT; // Name of your stored procedure
                                                 // Define parameters for the stored procedure
 
 
@@ -45,16 +45,14 @@ namespace Buddy2Study.Infrastructure.Repositories
             {
 
                 users.FirstName,
-                users.LatName,      // Note: double-check if this should be "LastName"
+                users.LastName,      // Note: double-check if this should be "LastName"
                 users.Email,
                 users.Phone,
                 users.DateofBirth,
                 users.UserName,
-                users.Password,
+                users.PasswordHash,
                 users.Gender,
-                users.Course,
-                users.College,
-                users.Year,
+                users.Education,
                 users.CreatedBy,
                 users.CreatedDate
 
@@ -82,16 +80,14 @@ namespace Buddy2Study.Infrastructure.Repositories
             {
                 users.Id,
                 users.FirstName,
-                users.LatName,     // Again, verify naming
+                users.LastName,     // Again, verify naming
                 users.Email,
                 users.Phone,
                 users.DateofBirth,
                 users.UserName,
-                users.Password,
+                users.PasswordHash,
                 users.Gender,
-                users.Course,
-                users.College,
-                users.Year,
+                users.Education,
                 users.ModifiedBy,
                 users.ModifiedDate
 

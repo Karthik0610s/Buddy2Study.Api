@@ -24,6 +24,10 @@ services.Configure<ConnectionStrings>(configuration.GetSection("ConnectionString
 services.AddScoped<IScholarshipApplicationFormRepository, ScholarshipApplicationFormRepository>();
 services.AddScoped<IScholarshipApplicationFormService, ScholarshipApplicationFormService>();
 services.AddScoped<IDataBaseConnection, DataBaseConnection>();
+services.AddScoped<IUserService, UserService>();
+services.AddScoped<IUserRepository, UserRepository>();
+services.AddScoped<IAuthService, AuthService>();
+
 
 // Add services to the container.
 
