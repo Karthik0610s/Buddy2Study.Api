@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Options;
 
@@ -10,6 +12,7 @@ namespace Buddy2Study.Infrastructure.DatabaseConnection
         {
             Connection = new SqlConnection(connectionStrings.Value.DbConnection);
         }
+
         public IDbConnection Connection { get; }
     }
 }

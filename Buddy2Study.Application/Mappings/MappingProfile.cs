@@ -21,7 +21,7 @@ namespace Buddy2Study.Application.Mappings
         /// Initializes a new instance of the <see cref="MappingProfile"/> class.
         /// </summary>
         public MappingProfile()
-        {
+    {
             // Define mappings between Brand and BrandDto
 
             CreateMap<ScholarshipApplicationForm, ScholarshipApplicationFormDto>().ReverseMap();
