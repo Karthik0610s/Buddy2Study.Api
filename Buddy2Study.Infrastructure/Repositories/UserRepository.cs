@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 using Dapper;
 using Buddy2Study.Domain.Entities;
 using Buddy2Study.Infrastructure.Constants;
-using Buddy2Study.Infrastructure.DataBaseConnection;
+using Buddy2Study.Infrastructure.DatabaseConnection;
 using Buddy2Study.Infrastructure.Interfaces;
+using Buddy2Study.Infrastructure.DatabaseConnection;
 
 namespace Buddy2Study.Infrastructure.Repositories
 {
