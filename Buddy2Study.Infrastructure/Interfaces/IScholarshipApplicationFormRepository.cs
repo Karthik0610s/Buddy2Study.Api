@@ -13,5 +13,7 @@ namespace Buddy2Study.Infrastructure.Interfaces
         Task<ScholarshipApplicationForm> InsertScholarshipApplicationForm(ScholarshipApplicationForm dto);
         Task UpdateScholarshipApplicationForm(ScholarshipApplicationForm dto);
         Task<bool> DeleteScholarshipApplicationForm(int id);
+        Task<String> UpdateFilepathdata(string target, int id, string files, string TypeofUser);
+
     }
 }

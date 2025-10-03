@@ -40,6 +40,21 @@ namespace Buddy2Study.Api.Controllers
                 var result = await _scholarshipService.GetScholarshipsApplicationForm(null);
                 if (result == null || !result.Any())
                     return NoContent();
+                foreach (var Student in result)
+                {
+                    if (!string.IsNullOrWhiteSpace(Student.FileName))
+                    {
+                        var filesList = Student.FileName.Split('|').ToList();
+
+
+                        if (filesList.Count > 0 && string.IsNullOrWhiteSpace(filesList.Last()))
+                        {
+                            filesList.RemoveAt(filesList.Count - 1);
+                        }
+
+                        Student.Files = filesList;
+                    }
+                }
 
                 return Ok(result);
             }
@@ -193,6 +208,50 @@ namespace Buddy2Study.Api.Controllers
                 Detail = "An error occurred while processing your request. Please try again later.",
                 Status = (int)HttpStatusCode.InternalServerError
             });
+        }
+
+        [HttpPost("UploadFiles")]
+        [ProducesResponseType(200, Type = typeof(FileUploadDto))]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> UploadfacultystudentFile([FromForm] FileUploadDto fileUploadModel)
+        {
+            if (fileUploadModel.FormFiles != null)
+            {
+                var target = Path.Combine(Directory.GetCurrentDirectory(), fileUploadModel.TypeofUser, fileUploadModel.TypeofUser + "-" + fileUploadModel.Id);
+
+                if (!Directory.Exists(target))
+                {
+                    Directory.CreateDirectory(target);
+                }
+
+                // Get existing files in the directory
+                List<string> existingFiles = Directory.GetFiles(target).Select(Path.GetFileName).ToList();
+
+                // Upload new files
+                for (int i = 0; i < fileUploadModel.FormFiles.Count; i++)
+                {
+                    string path = Path.Combine(target, fileUploadModel.FormFiles[i].FileName);
+                    // Check if file already exists to prevent duplication
+                    if (!System.IO.File.Exists(path))
+                    {
+                        using (Stream stream = new FileStream(path, FileMode.Create, FileAccess.Write))
+                        {
+                            await fileUploadModel.FormFiles[i].CopyToAsync(stream);
+                        }
+
+                        // Add new file name to the list
+                        existingFiles.Add(fileUploadModel.FormFiles[i].FileName);
+                    }
+                }
+
+                // Join filenames with '|'
+                string filenames = string.Join("|", existingFiles) + "|";
+
+                // Update file path data in the database
+                var result = await _scholarshipService.UpdateFilepathdata(target, fileUploadModel.Id, filenames, fileUploadModel.TypeofUser);
+            }
+
+            return Ok();
         }
     }
 }

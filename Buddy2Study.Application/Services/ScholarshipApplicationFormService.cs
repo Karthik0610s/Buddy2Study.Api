@@ -56,6 +56,16 @@ namespace Buddy2Study.Application.Services
             return await _repository.DeleteScholarshipApplicationForm(id);
         }
 
-      
+        public virtual async Task<string> UpdateFilepathdata(string target, int id, string files, string TypeofUser)
+        {
+            try
+            {
+                return await _repository.UpdateFilepathdata(target, id, files, TypeofUser);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

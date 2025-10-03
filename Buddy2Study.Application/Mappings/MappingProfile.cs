@@ -32,6 +32,8 @@ namespace Buddy2Study.Application.Mappings
 
 
 
+            CreateMap<FileUpload, FileUploadDto>().ReverseMap();
+            
 
 
         }
