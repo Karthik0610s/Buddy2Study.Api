@@ -2,6 +2,9 @@
 using Buddy2Study.Application.Dtos;
 using Buddy2Study.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using SqlException = Microsoft.Data.SqlClient.SqlException;
+
 
 namespace Buddy2Study.Api.Controllers
 {
@@ -89,12 +92,15 @@ namespace Buddy2Study.Api.Controllers
             catch (SqlException ex)
             {
                 _logger.LogError(ex, "SQL error: {Message}", ex.Message);
+
                 return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
                 {
                     Title = "Database Error",
-                    Detail = "An error occurred while accessing the database."
+                    Detail = ex.ToString(),  // 👈 this will show full SQL exception details
+                    Status = StatusCodes.Status500InternalServerError
                 });
             }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error: {Message}", ex.Message);

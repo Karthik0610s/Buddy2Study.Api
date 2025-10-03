@@ -18,9 +18,17 @@ namespace Buddy2Study.Domain.Entities
         public string PasswordHash { get; set; }   
         public string Gender { get; set; }
         public string Education { get; set; }
+        public int RoleId { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+    }
+
+    public class EducationDetails
+    {
+        public string Course { get; set; }
+        public string College { get; set; }
+        public string Year { get; set; }
     }
 }
