@@ -25,7 +25,8 @@ namespace Buddy2Study.Application.Mappings
             // Define mappings between Brand and BrandDto
 
             CreateMap<ScholarshipApplicationForm, ScholarshipApplicationFormDto>().ReverseMap();
-           
+            CreateMap<FileUpload, FileUploadDto>().ReverseMap();
+            
 
 
         }

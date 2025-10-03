@@ -58,7 +58,7 @@ namespace Buddy2Study.Infrastructure.Repositories
                 GPAOrMarks = scholarship.GPAOrMarks,
 
                 // Scholarship Details
-                ScholarshipName = scholarship.ScholarshipName,
+                ScholarshipId = scholarship.ScholarshipId,
                 Category = scholarship.Category,
                 ApplicationDate = scholarship.ApplicationDate,
                 FilePath = scholarship.FilePath,
@@ -70,7 +70,7 @@ namespace Buddy2Study.Infrastructure.Repositories
                 NotesComments = scholarship.NotesComments,
 
                 // Status & Audit
-                StatusId = scholarship.StatusId,
+                Status = scholarship.Status,
                 CreatedBy = scholarship.CreatedBy
             };
 
@@ -107,7 +107,7 @@ namespace Buddy2Study.Infrastructure.Repositories
                 GPAOrMarks = scholarship.GPAOrMarks,
 
                 // Scholarship Details
-                ScholarshipName = scholarship.ScholarshipName,
+                ScholarshipId = scholarship.ScholarshipId,
                 Category = scholarship.Category,
                 ApplicationDate = scholarship.ApplicationDate,
                 FilePath = scholarship.FilePath,
@@ -119,7 +119,7 @@ namespace Buddy2Study.Infrastructure.Repositories
                 NotesComments = scholarship.NotesComments,
 
                 // Status & Audit
-                StatusId = scholarship.StatusId,
+                Status = scholarship.Status,
                 ModifiedBy = scholarship.ModifiedBy
             };
 
@@ -137,5 +137,14 @@ namespace Buddy2Study.Infrastructure.Repositories
             return true;
         }
 
+        public Task<string> UpdateFilepathdata(string target, int id, string filesList, string TypeofFile)
+        {
+            var spName = SPNames.SP_UPDATEFILE;
+            //  var list = new List<string>;
+
+            return Task.Factory.StartNew(() => _db.Connection.Query<string>(spName,
+                new { Id = id, filepath = target, files = filesList, typeofFile = TypeofFile },
+                commandType: CommandType.StoredProcedure).ToString());
+        }
     }
 }

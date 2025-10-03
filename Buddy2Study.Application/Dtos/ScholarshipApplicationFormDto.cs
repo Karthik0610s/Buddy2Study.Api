@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace Buddy2Study.Application.Dtos
         public string GPAOrMarks { get; set; } = string.Empty;
 
      
-        public string ScholarshipName { get; set; } = string.Empty;
+        public int  ScholarshipId { get; set; } = 0;
         public string Category { get; set; } = string.Empty;
         public DateTime? ApplicationDate { get; set; }
         public string FilePath { get; set; } = string.Empty;
@@ -38,7 +39,7 @@ namespace Buddy2Study.Application.Dtos
         public string NotesComments { get; set; } = string.Empty;
 
        
-        public int StatusId { get; set; } = 1;
+        public string Status { get; set; } = string.Empty;
 
        
         public DateTime? CreatedDate { get; set; }
@@ -49,4 +50,5 @@ namespace Buddy2Study.Application.Dtos
        
         public List<string> Files { get; set; } = new();
     }
+    
 }

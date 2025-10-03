@@ -17,5 +17,6 @@ namespace Buddy2Study.Infrastructure.Constants
         public static string SP_INSERTUSER = "";
         public static string SP_DELETEUSER = "";
         public static string SP_UPDATEUSER = "";
+        public const string SP_UPDATEFILE = "sp_UpdateFile";
     }
 }
