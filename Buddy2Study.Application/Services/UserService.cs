@@ -41,8 +41,8 @@ namespace Buddy2Study.Application.Services
         {
 
             var User = _mapper.Map<Users>(userDto);
-            var enPassword = BCrypt.Net.BCrypt.HashPassword(User.Password);
-            User.Password = enPassword;
+            var enPassword = BCrypt.Net.BCrypt.HashPassword(User.PasswordHash);
+            User.PasswordHash = enPassword;
             var insertedData = await _userRepository.InsertUserDetails(User);
             if (insertedData == null)
             {

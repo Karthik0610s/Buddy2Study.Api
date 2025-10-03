@@ -35,12 +35,12 @@ namespace Buddy2Study.Application.Services
                 throw new Exception("The username does not match any account.");
             }
 
-            if (string.IsNullOrEmpty(user.Password))
+            if (string.IsNullOrEmpty(user.PasswordHash))
             {
                 throw new Exception("Please reset your password and then continue to login.");
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
                 throw new Exception("The username or password does not match.");
             }
