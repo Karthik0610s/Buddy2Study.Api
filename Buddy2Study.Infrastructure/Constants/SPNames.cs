@@ -19,5 +19,11 @@ namespace Buddy2Study.Infrastructure.Constants
         public static string SP_UPDATESTUDENT = "sp_UpdateStudent";
         public static string SP_UPDATEUSER = "";
         public const string SP_UPDATEFILE = "sp_UpdateFile";
+
+        public static string SP_GETSPONSORSALL = "sp_GetAllSponsors";
+        public static string SP_INSERTSPONSOR = "sp_InsertStudent";
+        public static string SP_UPDATESPONSOR = "sp_UpdateStudent";
+
+
     }
 }

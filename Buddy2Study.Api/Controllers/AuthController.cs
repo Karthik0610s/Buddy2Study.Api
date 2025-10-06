@@ -12,10 +12,14 @@ namespace Buddy2Study.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService) => _authService = authService;
+
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
 
         /// <summary>
-        /// Login endpoint.
+        /// Normal user login endpoint
         /// </summary>
         [AllowAnonymous]
         [HttpPost("login")]
@@ -45,5 +49,7 @@ namespace Buddy2Study.Api.Controllers
                 });
             }
         }
+
+        
     }
 }
