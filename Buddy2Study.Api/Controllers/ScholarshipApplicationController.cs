@@ -80,8 +80,28 @@ namespace Buddy2Study.Api.Controllers
             try
             {
                 var result = await _scholarshipService.GetScholarshipsApplicationForm(id);
-                return result.Any() ? Ok(result.First()) : NotFound("Scholarship not found.");
+                if (!result.Any())
+                    return NotFound("Scholarship not found.");
+
+                var student = result.First();
+
+                // --- Add Files logic ---
+                if (!string.IsNullOrWhiteSpace(student.FileName))
+                {
+                    var filesList = student.FileName.Split('|').ToList();
+
+                    if (filesList.Count > 0 && string.IsNullOrWhiteSpace(filesList.Last()))
+                    {
+                        filesList.RemoveAt(filesList.Count - 1);
+                    }
+
+                    student.Files = filesList;
+                }
+
+                return Ok(student);
             }
+              //  return result.Any() ? Ok(result.First()) : NotFound("Scholarship not found.");
+            
             catch (Exception ex)
             {
                 return InternalServerError(ex);
