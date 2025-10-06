@@ -24,12 +24,12 @@ namespace Buddy2Study.Application.Services
             _configuration = configuration;
         }
 
-        public async Task<TokenDto> LoginAsync(string Email, string password)
+        public async Task<TokenDto> LoginAsync(string UserName, string password)
         {
             var users = await _userRepository.GetUsersDetails(null);
 
             // Match login username
-            var user = users.FirstOrDefault(x => x.Email == Email);
+            var user = users.FirstOrDefault(x => x.UserName == UserName);
             if (user == null)
             {
                 throw new Exception("The username does not match any account.");
@@ -71,7 +71,7 @@ namespace Buddy2Study.Application.Services
                 Token = token,
                 ExpiresAt = expires,
               //  RoleName = user.Role,
-                Username = user.Email,
+                Username = user.UserName,
                 UserId = user.Id
             };
         }

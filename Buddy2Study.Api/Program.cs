@@ -27,7 +27,8 @@ services.AddScoped<IDataBaseConnection, DataBaseConnection>();
 services.AddScoped<IUserService, UserService>();
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IAuthService, AuthService>();
-
+services.AddScoped<ISponsorService, SponsorService>();
+services.AddScoped<ISponsorRepository, SponsorRepository>();
 
 // Add services to the container.
 

@@ -45,7 +45,7 @@ namespace Buddy2Study.Infrastructure.Repositories
             {
 
                 users.FirstName,
-                users.LastName,      // Note: double-check if this should be "LastName"
+                users.LastName,      
                 users.Email,
                 users.Phone,
                 users.DateofBirth,
@@ -53,8 +53,9 @@ namespace Buddy2Study.Infrastructure.Repositories
                 users.PasswordHash,
                 users.Gender,
                 users.Education,
+                users.RoleId,
                 users.CreatedBy,
-                users.CreatedDate
+
 
 
             };
@@ -73,7 +74,7 @@ namespace Buddy2Study.Infrastructure.Repositories
         /// <inheritdoc/>
         public async Task UpdateUserDetails(Users users)
         {
-            var spName = SPNames.SP_UPDATEUSER; // Update the stored procedure name if necessary
+            var spName = SPNames.SP_UPDATESTUDENT; // Update the stored procedure name if necessary
 
 
             var parameters = new
@@ -88,8 +89,9 @@ namespace Buddy2Study.Infrastructure.Repositories
                 users.PasswordHash,
                 users.Gender,
                 users.Education,
+                users.RoleId,
                 users.ModifiedBy,
-                users.ModifiedDate
+
 
             };
             await Task.Factory.StartNew(() =>
