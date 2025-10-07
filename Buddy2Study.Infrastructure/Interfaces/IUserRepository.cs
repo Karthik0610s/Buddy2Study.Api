@@ -33,7 +33,7 @@ namespace Buddy2Study.Infrastructure.Interfaces
         /// <returns>
         /// The task result indicates whether the deletion was successful.
         /// </returns>
-        Task<bool> DeleteUserDetails(int id);
+     
         //Task LoginAsync(string username, string password);
 
         /// <summary>

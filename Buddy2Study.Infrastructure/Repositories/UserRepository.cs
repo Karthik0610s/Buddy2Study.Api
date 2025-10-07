@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Dapper;
 using Buddy2Study.Domain.Entities;
 using Buddy2Study.Infrastructure.Constants;
 using Buddy2Study.Infrastructure.DatabaseConnection;
 using Buddy2Study.Infrastructure.Interfaces;
-using Buddy2Study.Infrastructure.DatabaseConnection;
 
 namespace Buddy2Study.Infrastructure.Repositories
 {
@@ -17,10 +11,6 @@ namespace Buddy2Study.Infrastructure.Repositories
     {
         private readonly IDataBaseConnection _db;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UserRepository"/> class.
-        /// </summary>
-        /// <param name="_db">The database connection for accessing billing data.</param>
         public UserRepository(IDataBaseConnection db)
         {
             this._db = db;
@@ -29,7 +19,7 @@ namespace Buddy2Study.Infrastructure.Repositories
         /// <inheritdoc/>
         public async Task<IEnumerable<Users>> GetUsersDetails(int? id)
         {
-            var spName = SPNames.SP_GETUSERSALL; // Update the stored procedure name if necessary
+            var spName = SPNames.SP_GETALLSTUDENT; // Update the stored procedure name if necessary
             return await Task.Factory.StartNew(() => _db.Connection.Query<Users>(spName,
                 new { Id = id }, commandType: CommandType.StoredProcedure).ToList());
         }
@@ -37,8 +27,6 @@ namespace Buddy2Study.Infrastructure.Repositories
         public async Task<Users> InsertUserDetails(Users users)
         {
             var spName = SPNames.SP_INSERTSTUDENT; // Name of your stored procedure
-                                                // Define parameters for the stored procedure
-
 
 
             var parameters = new
@@ -97,15 +85,6 @@ namespace Buddy2Study.Infrastructure.Repositories
             await Task.Factory.StartNew(() =>
                 _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure));
         }
-
-        public async Task<bool> DeleteUserDetails(int id)
-        {
-            var spName = SPNames.SP_DELETEUSER; // Update the stored procedure name if necessary
-            await Task.Factory.StartNew(() =>
-                _db.Connection.Execute(spName, new { Id = id }, commandType: CommandType.StoredProcedure));
-            return true;
-        }
-
 
     }
 }

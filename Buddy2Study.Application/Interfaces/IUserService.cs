@@ -45,7 +45,7 @@ namespace Buddy2Study.Application.Interfaces
         /// <returns>
         /// The task result indicates whether the deletion was successful.
         /// </returns>
-        Task<bool> DeleteUserDetails(int id);
+
     }
 }
 
