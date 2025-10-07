@@ -29,7 +29,8 @@ services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped<ISponsorService, SponsorService>();
 services.AddScoped<ISponsorRepository, SponsorRepository>();
-
+services.AddScoped<IInstitutionService, InstitutionService>();
+services.AddScoped<IInstitutionRepository, InstitutionRepository>();
 // Add services to the container.
 
 services.AddControllers();

@@ -32,6 +32,7 @@ namespace Buddy2Study.Application.Mappings
             CreateMap<SponsorDto, Sponsors>().ReverseMap();
 
 
+            CreateMap<InstitutionDto, Institution>().ReverseMap();
 
 
             CreateMap<FileUpload, FileUploadDto>().ReverseMap();

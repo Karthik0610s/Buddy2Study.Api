@@ -24,6 +24,10 @@ namespace Buddy2Study.Infrastructure.Constants
         public static string SP_INSERTSPONSOR = "sp_InsertSponsor";
         public static string SP_UPDATESPONSOR = "sp_UpdateSponsor";
 
+        public static string SP_GETINSTITUTIONSALL = "[sp_GetInstitutionsWithUser]";
+        public static string SP_INSERTINSTITUTION = "sp_InsertInstitution";
+        public static string SP_UPDATEINSTITUTION = "sp_UpdateInstitution";
+
 
     }
 }
