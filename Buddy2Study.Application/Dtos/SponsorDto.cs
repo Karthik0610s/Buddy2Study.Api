@@ -23,5 +23,7 @@ namespace Buddy2Study.Application.Dtos
         public int RoleId { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

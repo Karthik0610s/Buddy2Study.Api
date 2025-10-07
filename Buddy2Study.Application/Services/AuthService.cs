@@ -1,51 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper.Configuration;
-using Buddy2Study.Application.Common;
+﻿using Buddy2Study.Application.Common;
 using Buddy2Study.Application.Dtos;
 using Buddy2Study.Application.Interfaces;
 using Buddy2Study.Infrastructure.Interfaces;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Buddy2Study.Application.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
+        private readonly ISponsorRepository _sponsorRepository;
         private readonly IConfiguration _configuration;
 
-        public AuthService(IUserRepository userRepository, IConfiguration configuration)
+        public AuthService(
+            IUserRepository userRepository,
+            ISponsorRepository sponsorRepository,
+            IConfiguration configuration)
         {
             _userRepository = userRepository;
+            _sponsorRepository = sponsorRepository;
             _configuration = configuration;
         }
 
+        // Normal user login
         public async Task<TokenDto> LoginAsync(string UserName, string password)
         {
             var users = await _userRepository.GetUsersDetails(null);
-
-            // Match login username
             var user = users.FirstOrDefault(x => x.UserName == UserName);
-            if (user == null)
-            {
-                throw new Exception("The username does not match any account.");
-            }
-
-            if (string.IsNullOrEmpty(user.PasswordHash))
-            {
-                throw new Exception("Please reset your password and then continue to login.");
-            }
+            if (user == null) throw new Exception("The username does not match any account.");
+            if (string.IsNullOrEmpty(user.PasswordHash)) throw new Exception("Please reset your password.");
 
             if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
-            {
                 throw new Exception("The username or password does not match.");
-            }
 
-            // Read JWT settings safely
+            // Convert RoleId safely from string to int
+            int roleId = int.TryParse(user.RoleId, out var r) ? r : 0;
+
+            return GenerateToken(user.Id, user.UserName, user.FirstName, roleId);
+        }
+
+        // JWT token generation
+        private TokenDto GenerateToken(int id, string userName, string name, int roleId)
+        {
             var secretKey = _configuration["JWTSettings:SecretKey"]
                 ?? throw new Exception("JWT SecretKey is not configured.");
             var issuer = _configuration["JWTSettings:Issuer"]
@@ -57,13 +58,11 @@ namespace Buddy2Study.Application.Services
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.FirstName ?? string.Empty),
-               // new Claim(ClaimTypes.Role, user.Role ?? string.Empty),
-                new Claim("UserId", user.Id.ToString())
+                new Claim(ClaimTypes.Name, name ?? string.Empty),
+                new Claim("UserId", id.ToString())
             };
 
             var expires = DateTime.UtcNow.AddDays(1);
-
             var token = jwtService.GenerateToken(claims, expires);
 
             return new TokenDto
@@ -76,7 +75,4 @@ namespace Buddy2Study.Application.Services
             };
         }
     }
-
-
-
 }
