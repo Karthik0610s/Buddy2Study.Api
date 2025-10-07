@@ -60,8 +60,8 @@ namespace Buddy2Study.Infrastructure.Repositories
             };
 
             // Execute the stored procedure and retrieve the inserted data
-            var insertedData = await _db.Connection.QuerySingleOrDefaultAsync<Sponsors>(
-                spName,
+            var insertedData = await _db.Connection.QueryFirstOrDefaultAsync<Sponsors>(
+                            spName,
                 parameters,
                 commandType: CommandType.StoredProcedure
             );
