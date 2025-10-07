@@ -17,12 +17,14 @@ namespace Buddy2Study.Application.Dtos
         public string UserName { get; set; }
         public string PasswordHash { get; set; }
         public string Gender { get; set; }
-        public string Education { get; set; } // ✅ JSON string
+        public string Education { get; set; } // ✅ JSON string*/
         public string RoleId { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+             public string? RoleName { get; set; }
+        public string? Name { get; set; }
     }
 
     public class EducationDto
