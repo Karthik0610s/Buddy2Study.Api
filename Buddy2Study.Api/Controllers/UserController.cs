@@ -137,29 +137,5 @@ namespace Buddy2Study.Api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            _logger.LogInformation("{MethodName} called for id {id}", nameof(DeleteUser), id);
-
-            var userDtos = await _userService.GetUsersDetails(id);
-            if (!userDtos.Any())
-                return NotFound();
-
-            try
-            {
-                await _userService.DeleteUserDetails(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error: {Message}", ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
-                {
-                    Title = "Internal Server Error",
-                    Detail = "Unexpected error."
-                });
-            }
-        }
     }
 }

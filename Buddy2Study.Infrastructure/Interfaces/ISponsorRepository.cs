@@ -26,6 +26,8 @@ namespace Buddy2Study.Infrastructure.Interfaces
         /// Not returns anything.
         /// </returns>
         Task UpdateSponsorDetails(Sponsors Sponsors);
+     
+
         /// <summary>
         /// Deletes a Sponsors by its unique identifier.
         /// </summary>
@@ -33,6 +35,6 @@ namespace Buddy2Study.Infrastructure.Interfaces
         /// <returns>
         /// The task result indicates whether the deletion was successful.
         /// </returns>
-       
+
     }
 }

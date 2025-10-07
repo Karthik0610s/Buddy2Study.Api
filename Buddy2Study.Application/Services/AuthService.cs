@@ -69,9 +69,9 @@ namespace Buddy2Study.Application.Services
             {
                 Token = token,
                 ExpiresAt = expires,
-                Username = userName,
-                UserId = id,
-                RoleId = roleId
+                RoleId = user.RoleId,
+                Username = user.UserName,
+                UserId = user.Id
             };
         }
     }

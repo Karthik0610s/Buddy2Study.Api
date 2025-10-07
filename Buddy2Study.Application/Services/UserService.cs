@@ -59,10 +59,6 @@ namespace Buddy2Study.Application.Services
             await _userRepository.UpdateUserDetails(User);
         }
         /// <inheritdoc/>
-        public async Task<bool> DeleteUserDetails(int id)
-        {
-            return await _userRepository.DeleteUserDetails(id);
-        }
 
 
     }
