@@ -23,6 +23,9 @@ namespace Buddy2Study.Domain.Entities
         public DateTime CreatedDate { get; set; }
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public string? RoleName { get; set; }
+        public string? Name { get; set; }
+        public int UserId { get; set; }
     }
 
     public class EducationDetails
