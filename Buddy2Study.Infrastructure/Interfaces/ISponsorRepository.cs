@@ -25,7 +25,7 @@ namespace Buddy2Study.Infrastructure.Interfaces
         /// <returns>
         /// Not returns anything.
         /// </returns>
-        Task UpdateSponsorDetails(Sponsors Sponsors);
+Task<Sponsors> UpdateSponsorDetails(Sponsors sponsor);
      
 
         /// <summary>

@@ -11,15 +11,22 @@ namespace Buddy2Study.Domain.Entities
         public string Phone { get; set; }
         public string Website { get; set; }
 
-        // Added properties for SP
-        public string Username { get; set; }          // maps to SP Username
+        // Newly added properties for the UI/database
+        public string? ContactPerson { get; set; }
+        public string? Address { get; set; }
+        public string? Budget { get; set; }
+        public string? StudentCriteria { get; set; }
+        public string? StudyLevels { get; set; }
+
+        // Login-related fields
+        public string Username { get; set; }
         public string PasswordHash { get; set; }
         public int RoleId { get; set; }
 
+        // Audit fields
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
-
-        public string ModifiedBy { get; set; }        // for update
-        public DateTime? ModifiedDate { get; set; }   // optional
+        public string? ModifiedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
     }
 }

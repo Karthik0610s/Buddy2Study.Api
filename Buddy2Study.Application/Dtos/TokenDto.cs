@@ -15,5 +15,6 @@ namespace Buddy2Study.Application.Dtos
         public string Username { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public int UserId { get; set; }
+        public int Id { get; set; }
     }
 }
