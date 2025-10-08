@@ -44,7 +44,7 @@ namespace Buddy2Study.Infrastructure.Repositories
             var parameters = new
             {
 
-                
+
                 Sponsors.OrganizationName,
                 Sponsors.OrganizationType,     // Again, verify naming
                 Sponsors.Email,
@@ -71,33 +71,36 @@ namespace Buddy2Study.Infrastructure.Repositories
 
         }
         /// <inheritdoc/>
-        public async Task UpdateSponsorDetails(Sponsors Sponsors)
+        public async Task<Sponsors> UpdateSponsorDetails(Sponsors sponsor)
         {
-            var spName = SPNames.SP_UPDATESPONSOR; // Update the stored procedure name if necessary
-
+            var spName = SPNames.SP_UPDATESPONSOR;
 
             var parameters = new
             {
-                Sponsors.Id,
-                Sponsors.OrganizationName,
-                Sponsors.OrganizationType,     // Again, verify naming
-                Sponsors.Email,
-                Sponsors.Phone,
-                Sponsors.Website,
-                Sponsors.Username,
-                Sponsors.PasswordHash,
-                Sponsors.RoleId,
-                Sponsors.ModifiedBy,
-
-                
-
-
+                SponsorId = sponsor.Id,
+                OrganizationName = sponsor.OrganizationName,
+                OrganizationType = sponsor.OrganizationType,
+                Email = sponsor.Email,
+                Phone = sponsor.Phone,
+                Website = sponsor.Website,
+                ContactPerson = sponsor.ContactPerson,
+                Address = sponsor.Address,
+                Budget = sponsor.Budget,
+                StudentCriteria = sponsor.StudentCriteria,
+                StudyLevels = sponsor.StudyLevels,
+                ModifiedBy = sponsor.ModifiedBy
             };
-            await Task.Factory.StartNew(() =>
-                _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure));
+
+            // Execute SP and return updated sponsor
+            var updatedSponsor = await _db.Connection.QueryFirstOrDefaultAsync<Sponsors>(
+                spName,
+                parameters,
+                commandType: System.Data.CommandType.StoredProcedure
+            );
+
+            return updatedSponsor;
         }
 
-       
 
     }
 }

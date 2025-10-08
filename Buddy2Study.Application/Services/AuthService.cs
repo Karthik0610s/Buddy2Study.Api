@@ -1,6 +1,7 @@
 ﻿using Buddy2Study.Application.Common;
 using Buddy2Study.Application.Dtos;
 using Buddy2Study.Application.Interfaces;
+using Buddy2Study.Domain.Entities;
 using Buddy2Study.Infrastructure.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -69,9 +70,9 @@ namespace Buddy2Study.Application.Services
             {
                 Token = token,
                 ExpiresAt = expires,
-                RoleId = user.RoleId,
-                Username = user.UserName,
-                UserId = user.Id
+                RoleId = roleId,
+                Username = userName,
+                UserId = id
             };
         }
     }

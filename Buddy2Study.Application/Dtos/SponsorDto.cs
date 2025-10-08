@@ -1,29 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Buddy2Study.Application.Dtos
+﻿public class SponsorDto
 {
-    /// <summary>
-    /// DTO for returning Sponsor + User info after insert
-    /// </summary>
-    public class SponsorDto
-    {
-        public int Id { get; set; }                  // SponsorId
-        public string OrganizationName { get; set; }
-        public string OrganizationType { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Website { get; set; }
-        public string Username { get; set; }         
-        public string PasswordHash { get; set; }
-        public int RoleId { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public string? ModifiedBy { get; set; }
-        public DateTime? ModifiedDate { get; set; }
-    }
+    public int Id { get; set; }
+    public string OrganizationName { get; set; }
+    public string OrganizationType { get; set; }
+    public string Email { get; set; }
+    public string Phone { get; set; }
+    public string Website { get; set; }
+
+    // UI fields
+    public string ContactPerson { get; set; }
+    public string Address { get; set; }
+    public string Budget { get; set; }
+    public string StudentCriteria { get; set; }
+    public string StudyLevels { get; set; }
+
+    // Only for insert
+    public string? Username { get; set; }
+    public string? PasswordHash { get; set; }
+    public int? RoleId { get; set; }
+    public string? CreatedBy { get; set; }
+
+    // For update
+    public string? ModifiedBy { get; set; }
+    public DateTime? ModifiedDate { get; set; }
 }

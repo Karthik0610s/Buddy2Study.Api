@@ -19,7 +19,7 @@ namespace Buddy2Study.Infrastructure.Repositories
         /// <inheritdoc/>
         public async Task<IEnumerable<Users>> GetUsersDetails(int? id)
         {
-            var spName = SPNames.SP_GETALLSTUDENT; // Update the stored procedure name if necessary
+            var spName = SPNames.SP_GETUSERSALL; // Update the stored procedure name if necessary
             return await Task.Factory.StartNew(() => _db.Connection.Query<Users>(spName,
                 new { Id = id }, commandType: CommandType.StoredProcedure).ToList());
         }

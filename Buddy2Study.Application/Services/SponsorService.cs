@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
+using BCrypt.Net;
 using Buddy2Study.Application.Dtos;
 using Buddy2Study.Application.Interfaces;
 using Buddy2Study.Domain.Entities;
 using Buddy2Study.Infrastructure.Interfaces;
+using Buddy2Study.Infrastructure.Repositories;
 using Org.BouncyCastle.Crypto.Generators;
-using BCrypt.Net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Buddy2Study.Application.Services
 {
@@ -52,14 +53,22 @@ namespace Buddy2Study.Application.Services
             return _mapper.Map<SponsorDto>(insertedData);
 
         }
-        /// <inheritdoc/>
-        public async Task UpdateSponsorDetails(SponsorDto SponsorDto)
+        public async Task<SponsorDto> UpdateSponsorDetails(SponsorDto sponsorDto)
         {
-            var Sponsor = _mapper.Map<Sponsors>(SponsorDto);
-            await _SponsorRepository.UpdateSponsorDetails(Sponsor);
+            if (sponsorDto == null)
+                throw new ArgumentNullException(nameof(sponsorDto));
+
+            // Map DTO -> Entity
+            var sponsor = _mapper.Map<Sponsors>(sponsorDto);
+
+            // Call repository to update
+            var updatedSponsor = await _SponsorRepository.UpdateSponsorDetails(sponsor);
+
+            // Map Entity -> DTO and return
+            return _mapper.Map<SponsorDto>(updatedSponsor);
         }
-        /// <inheritdoc/>
-       
+
+
 
 
     }

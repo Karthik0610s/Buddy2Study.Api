@@ -112,19 +112,17 @@ namespace Buddy2Study.Api.Controllers
             }
         }
 
+        
         [HttpPut]
-        public async Task<IActionResult> UpdateSponsor([FromBody] SponsorDto SponsorDto)
+        public async Task<IActionResult> UpdateSponsorDetails([FromBody] SponsorDto SponsorDto)
         {
-            _logger.LogInformation("{MethodName} called", nameof(UpdateSponsor));
-
-            var SponsorDtos = await _SponsorService.GetSponsorsDetails(SponsorDto.Id);
-            if (!SponsorDtos.Any())
-                return NotFound();
+            if (SponsorDto == null)
+                return BadRequest("SponsorDto is required.");
 
             try
             {
-                await _SponsorService.UpdateSponsorDetails(SponsorDto);
-                return NoContent();
+                var updatedSponsor = await _SponsorService.UpdateSponsorDetails(SponsorDto);
+                return Ok(updatedSponsor); // return updated sponsor
             }
             catch (Exception ex)
             {
@@ -136,6 +134,7 @@ namespace Buddy2Study.Api.Controllers
                 });
             }
         }
+
 
     }
 }
