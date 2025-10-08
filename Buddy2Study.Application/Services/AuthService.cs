@@ -40,12 +40,12 @@ namespace Buddy2Study.Application.Services
 
             // Convert RoleId safely from string to int
             int roleId = int.TryParse(user.RoleId, out var r) ? r : 0;
-
-            return GenerateToken(user.Id, user.UserName, user.FirstName, roleId);
+            string roleName = user.RoleName ?? "Unknown";
+            return GenerateToken(user.Id, user.UserName, user.Name, roleId,roleName);
         }
 
         // JWT token generation
-        private TokenDto GenerateToken(int id, string userName, string name, int roleId)
+        private TokenDto GenerateToken(int id, string userName, string name, int roleId,string roleName)
         {
             var secretKey = _configuration["JWTSettings:SecretKey"]
                 ?? throw new Exception("JWT SecretKey is not configured.");
@@ -59,7 +59,12 @@ namespace Buddy2Study.Application.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, name ?? string.Empty),
-                new Claim("UserId", id.ToString())
+                new Claim("UserId", id.ToString()),
+                
+    
+    new Claim("RoleId", roleId.ToString()),
+    new Claim("RoleName", roleName ?? string.Empty)
+
             };
 
             var expires = DateTime.UtcNow.AddDays(1);
@@ -71,7 +76,9 @@ namespace Buddy2Study.Application.Services
                 ExpiresAt = expires,
                 RoleId = roleId,
                 Username = userName,
-                UserId = id
+                UserId = id,
+                RoleName=roleName,
+                Name=name
             };
         }
     }

@@ -28,23 +28,7 @@ namespace Buddy2Study.Application.Interfaces
         /// <returns>
         /// The task result indicates whether the insertion was successful.
         /// </returns>
-        Task<UserDto> InsertUserDetails(UserDto userDto);
-
-        /// <summary>
-        /// Updates an existing UserDto.
-        /// </summary>
-        /// <param //name="userDto">The DTO representing the updated UserDto.</param>
-        /// <returns>
-        ///The task result indicates whether the update was successful.
-        /// </returns>
-        Task UpdateUserDetails(UserDto userDto);
-        /// <summary>
-        /// Deletes a UserDto by its unique identifier.
-        /// </summary>
-        /// <param //name="id">The unique identifier of the UserDto to delete.</param>
-        /// <returns>
-        /// The task result indicates whether the deletion was successful.
-        /// </returns>
+     
 
     }
 }

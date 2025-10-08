@@ -37,30 +37,6 @@ namespace Buddy2Study.Application.Services
             return UserDetails;
         }
         /// <inheritdoc/>
-        public async Task<UserDto> InsertUserDetails(UserDto userDto)
-        {
-
-            var User = _mapper.Map<Users>(userDto);
-            var enPassword = BCrypt.Net.BCrypt.HashPassword(User.PasswordHash);
-            User.PasswordHash = enPassword;
-            var insertedData = await _userRepository.InsertUserDetails(User);
-            if (insertedData == null)
-            {
-                // Handle the case where the insertion was not successful
-                throw new Exception("User insertion failed.");
-            }
-            return _mapper.Map<UserDto>(insertedData);
-
-        }
-        /// <inheritdoc/>
-        public async Task UpdateUserDetails(UserDto userDto)
-        {
-            var User = _mapper.Map<Users>(userDto);
-            await _userRepository.UpdateUserDetails(User);
-        }
-        /// <inheritdoc/>
-
-
     }
 
 }

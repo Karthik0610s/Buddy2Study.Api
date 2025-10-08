@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace Buddy2Study.Application.Dtos
 {
-    public class UserDto
+    public class StudentDto
     {
         public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string DateofBirth { get; set; }
         public string UserName { get; set; }
         public string PasswordHash { get; set; }
+        public string Gender { get; set; }
+        public string Education { get; set; }
         public string RoleId { get; set; }
         public string? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
@@ -20,4 +27,11 @@ namespace Buddy2Study.Application.Dtos
         public string? Name { get; set; }
     }
 
+    public class EducationDto
+    {
+        public string Course { get; set; }
+        public string College { get; set; }
+        public string Year { get; set; }
+    }
 }
+

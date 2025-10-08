@@ -31,6 +31,8 @@ services.AddScoped<ISponsorService, SponsorService>();
 services.AddScoped<ISponsorRepository, SponsorRepository>();
 services.AddScoped<IInstitutionService, InstitutionService>();
 services.AddScoped<IInstitutionRepository, InstitutionRepository>();
+services.AddScoped<IStudentRepository, StudentRepository>();
+services.AddScoped<IStudentService, StudentService>();
 // Add services to the container.
 
 services.AddControllers();
