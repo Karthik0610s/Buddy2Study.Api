@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Buddy2Study.Domain.Entities;
+using Buddy2Study.Infrastructure.Constants;
 using Buddy2Study.Infrastructure.DatabaseConnection;
 using Buddy2Study.Infrastructure.Interfaces;
 using Dapper;
@@ -19,6 +20,7 @@ namespace Buddy2Study.Infrastructure.Repositories
             _db = db;
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Scholarships>> GetScholarshipsDetails(int id, string role)
         {
             string spName;
@@ -26,12 +28,12 @@ namespace Buddy2Study.Infrastructure.Repositories
 
             if (role?.ToLower() == "student")
             {
-                spName = "sp_GetScholarshipByStudent";
+                spName = SPNames.SP_GETSCHOLARSHIPBYSTUDENT;
                 parameters.Add("@StudentId", id, DbType.Int32);
             }
             else if (role?.ToLower() == "sponsor")
             {
-                spName = "sp_GetScholarshipBySponsor";
+                spName = SPNames.SP_GETSCHOLARSHIPBYSPONSOR;
                 parameters.Add("@SponsorId", id, DbType.Int32);
             }
             else
@@ -43,9 +45,10 @@ namespace Buddy2Study.Infrastructure.Repositories
             return result.ToList();
         }
 
+        /// <inheritdoc/>
         public async Task<Scholarships> InsertScholarship(Scholarships scholarship)
         {
-            var spName = "sp_InsertScholarshipDetails";
+            var spName = SPNames.SP_INSERTSCHOLARSHIP;
             var parameters = new DynamicParameters();
 
             parameters.Add("@ScholarshipCode", scholarship.ScholarshipCode);
@@ -70,9 +73,10 @@ namespace Buddy2Study.Infrastructure.Repositories
             return await _db.Connection.QueryFirstOrDefaultAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
         }
 
+        /// <inheritdoc/>
         public async Task<Scholarships> UpdateScholarship(Scholarships scholarship)
         {
-            var spName = "sp_UpdateScholarshipDetails";
+            var spName = SPNames.SP_UPDATESCHOLARSHIP;
             var parameters = new DynamicParameters();
 
             parameters.Add("@Id", scholarship.Id);
@@ -98,9 +102,10 @@ namespace Buddy2Study.Infrastructure.Repositories
             return await _db.Connection.QueryFirstOrDefaultAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
         }
 
+        /// <inheritdoc/>
         public async Task DeleteScholarship(int id, string modifiedBy)
         {
-            var spName = "sp_DeleteScholarship";
+            var spName = SPNames.SP_DELETESCHOLARSHIP; // You need to add this constant
             var parameters = new DynamicParameters();
             parameters.Add("@Id", id);
             parameters.Add("@ModifiedBy", modifiedBy);

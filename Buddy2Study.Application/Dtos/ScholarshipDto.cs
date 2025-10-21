@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Buddy2Study.Application.Dtos
 {
@@ -27,12 +23,15 @@ namespace Buddy2Study.Application.Dtos
         public string Status { get; set; }
         public string? FileName { get; set; }
         public string? FilePath { get; set; }
-        public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
+
+        // Make CreatedBy optional for update
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
+
+        // ModifiedBy is required for update
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
+
         public int ScholarshipLimit { get; set; }
     }
 }
-
-
