@@ -15,7 +15,7 @@ namespace Buddy2Study.Infrastructure.Repositories
 {
     public class ScholarshipApplicationFormRepository : IScholarshipApplicationFormRepository
     {
-        
+
 
 
         private readonly IDataBaseConnection _db;
@@ -90,7 +90,7 @@ namespace Buddy2Study.Infrastructure.Repositories
 
             var parameters = new
             {
-                 Id=scholarship.Id,
+                Id = scholarship.Id,
                 // Personal Information
                 FirstName = scholarship.FirstName,
                 LastName = scholarship.LastName,

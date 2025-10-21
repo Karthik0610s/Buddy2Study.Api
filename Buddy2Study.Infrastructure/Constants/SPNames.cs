@@ -30,5 +30,12 @@ namespace Buddy2Study.Infrastructure.Constants
         public static string SP_UPDATEINSTITUTION = "sp_UpdateInstitution";
 
 
+        public const string SP_GETSCHOLARSHIPBYSTUDENT = "sp_GetScholarshipByStudent";
+        public const string SP_GETSCHOLARSHIPBYSPONSOR = "sp_GetScholarshipBySponsor";
+        public const string SP_INSERTSCHOLARSHIP = "sp_InsertScholarship";
+        public const string SP_UPDATESCHOLARSHIP = "sp_UpdateScholarship";
+
+
+
     }
 }

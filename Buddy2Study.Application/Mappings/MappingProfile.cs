@@ -31,6 +31,8 @@ namespace Buddy2Study.Application.Mappings
             CreateMap<Students, StudentDto>().ReverseMap();
             CreateMap<LoginUserDto, Users>().ReverseMap();
             CreateMap<SponsorDto, Sponsors>().ReverseMap();
+            CreateMap<Scholarships, ScholarshipDto>().ReverseMap();
+
 
 
             CreateMap<InstitutionDto, Institution>().ReverseMap();
