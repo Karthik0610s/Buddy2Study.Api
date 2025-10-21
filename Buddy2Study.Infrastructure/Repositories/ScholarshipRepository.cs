@@ -19,9 +19,6 @@ namespace Buddy2Study.Infrastructure.Repositories
             _db = db;
         }
 
-        /// <summary>
-        /// Get scholarships based on role (student/sponsor) and optional Id
-        /// </summary>
         public async Task<IEnumerable<Scholarships>> GetScholarshipsDetails(int id, string role)
         {
             string spName;
@@ -42,14 +39,10 @@ namespace Buddy2Study.Infrastructure.Repositories
                 throw new ArgumentException("Role must be 'student' or 'sponsor'.");
             }
 
-            return await Task.Factory.StartNew(() =>
-                _db.Connection.Query<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure).ToList()
-            );
+            var result = await _db.Connection.QueryAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
+            return result.ToList();
         }
 
-        /// <summary>
-        /// Insert a new scholarship
-        /// </summary>
         public async Task<Scholarships> InsertScholarship(Scholarships scholarship)
         {
             var spName = "sp_InsertScholarshipDetails";
@@ -74,14 +67,9 @@ namespace Buddy2Study.Infrastructure.Repositories
             parameters.Add("@ScholarshipLimit", scholarship.ScholarshipLimit);
             parameters.Add("@CreatedBy", scholarship.CreatedBy);
 
-            return await Task.Factory.StartNew(() =>
-                _db.Connection.QueryFirstOrDefault<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure)
-            );
+            return await _db.Connection.QueryFirstOrDefaultAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        /// <summary>
-        /// Update an existing scholarship and return the updated record
-        /// </summary>
         public async Task<Scholarships> UpdateScholarship(Scholarships scholarship)
         {
             var spName = "sp_UpdateScholarshipDetails";
@@ -107,27 +95,17 @@ namespace Buddy2Study.Infrastructure.Repositories
             parameters.Add("@ScholarshipLimit", scholarship.ScholarshipLimit);
             parameters.Add("@ModifiedBy", scholarship.ModifiedBy);
 
-            // Execute SP and return updated scholarship
-            return await Task.Factory.StartNew(() =>
-                _db.Connection.QueryFirstOrDefault<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure)
-            );
+            return await _db.Connection.QueryFirstOrDefaultAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
         }
 
-        /// <summary>
-        /// Delete scholarship by Id
-        /// </summary>
-        public async Task<bool> DeleteScholarship(int id, string modifiedBy)
+        public async Task DeleteScholarship(int id, string modifiedBy)
         {
             var spName = "sp_DeleteScholarship";
             var parameters = new DynamicParameters();
             parameters.Add("@Id", id);
             parameters.Add("@ModifiedBy", modifiedBy);
 
-            await Task.Factory.StartNew(() =>
-                _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure)
-            );
-
-            return true;
+            await _db.Connection.ExecuteAsync(spName, parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

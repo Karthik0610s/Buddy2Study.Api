@@ -120,7 +120,6 @@ namespace Buddy2Study.Api.Controllers
                 });
             }
         }
-
         /// <summary>
         /// Delete a scholarship by ID
         /// </summary>
@@ -154,5 +153,6 @@ namespace Buddy2Study.Api.Controllers
                 });
             }
         }
+
     }
 }
