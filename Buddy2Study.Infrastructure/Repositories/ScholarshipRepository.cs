@@ -47,7 +47,19 @@ namespace Buddy2Study.Infrastructure.Repositories
 
             return result;
         }
+        public async Task<Scholarships> GetScholarshipById(int id)
+        {
+            var spName = SPNames.SP_GETSCHOLARSHIPBYID; // make sure this SP name exists in SPNames
+            var parameters = new { Id = id };
 
+            var result = await _db.Connection.QuerySingleOrDefaultAsync<Scholarships>(
+                spName,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
         /// <inheritdoc/>
         public async Task<Scholarships> InsertScholarship(Scholarships scholarship)
         {

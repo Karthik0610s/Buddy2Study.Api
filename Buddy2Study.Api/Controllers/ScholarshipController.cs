@@ -70,6 +70,43 @@ namespace Buddy2Study.Api.Controllers
             }
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetScholarshipById(int id)
+        {
+            _logger.LogInformation("{MethodName} called with Id {Id}", nameof(GetScholarshipById), id);
+
+            if (id <= 0)
+                return BadRequest("Invalid scholarship ID.");
+
+            try
+            {
+                var scholarship = await _scholarshipService.GetScholarshipById(id);
+
+                if (scholarship == null)
+                    return NotFound($"No scholarship found with ID {id}.");
+
+                return Ok(scholarship);
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "SQL Error in {MethodName}", nameof(GetScholarshipById));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Database Error",
+                    Detail = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in {MethodName}", nameof(GetScholarshipById));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Internal Server Error",
+                    Detail = ex.Message
+                });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> InsertScholarship([FromBody] ScholarshipDto scholarshipDto)
         {
