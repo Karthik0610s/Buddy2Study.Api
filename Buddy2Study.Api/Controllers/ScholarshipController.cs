@@ -2,6 +2,7 @@
 using Buddy2Study.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.IO.Compression;
 
 namespace Buddy2Study.Api.Controllers
 {
@@ -32,7 +33,21 @@ namespace Buddy2Study.Api.Controllers
 
                 if (result == null || !result.Any())
                     return NotFound("No scholarships found for the given criteria.");
+                foreach (var Student in result)
+                {
+                    if (!string.IsNullOrWhiteSpace(Student.FileName))
+                    {
+                        var filesList = Student.FileName.Split('|').ToList();
 
+
+                        if (filesList.Count > 0 && string.IsNullOrWhiteSpace(filesList.Last()))
+                        {
+                            filesList.RemoveAt(filesList.Count - 1);
+                        }
+
+                        Student.Files = filesList;
+                    }
+                }
                 return Ok(result);
             }
             catch (SqlException ex)
@@ -153,6 +168,34 @@ namespace Buddy2Study.Api.Controllers
                 });
             }
         }
+        /// </summary>
+       /* [HttpGet("downloadFiles/{id}")]
+        public async Task<IActionResult> DownloadFiles(int id)
+        {
+            var result = await _scholarshipService.GetScholarshipsApplicationForm(id);
+            var scholarship = result.FirstOrDefault();
 
+            if (scholarship == null)
+                return NotFound("Scholarship not found.");
+
+            if (string.IsNullOrEmpty(scholarship.FilePath) || !Directory.Exists(scholarship.FilePath))
+                return NotFound("Files not found.");
+
+            var zipName = $"scholarship_{id}_{DateTime.Now:yyyyMMddHHmmss}.zip";
+            using var compressedFileStream = new MemoryStream();
+            using (var zipArchive = new ZipArchive(compressedFileStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var file in Directory.GetFiles(scholarship.FilePath))
+                {
+                    var zipEntry = zipArchive.CreateEntry(Path.GetFileName(file));
+                    using var fileStream = System.IO.File.OpenRead(file);
+                    using var entryStream = zipEntry.Open();
+                    await fileStream.CopyToAsync(entryStream);
+                }
+            }
+
+            return File(compressedFileStream.ToArray(), "application/zip", zipName);
+        }
+       */
     }
 }

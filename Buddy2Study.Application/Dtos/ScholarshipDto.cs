@@ -27,6 +27,7 @@ namespace Buddy2Study.Application.Dtos
         public DateTime? CreatedDate { get; set; }            // Nullable
         public string? ModifiedBy { get; set; }               // Nullable
         public DateTime? ModifiedDate { get; set; }           // Nullable
-        public int? ScholarshipLimit { get; set; }            // Nullable
+        public int? ScholarshipLimit { get; set; }
+        public List<string> Files { get; set; } = new(); // Nullable
     }
 }
