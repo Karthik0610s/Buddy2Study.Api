@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Buddy2Study.Domain.Entities;
+﻿using Buddy2Study.Domain.Entities;
 using Buddy2Study.Infrastructure.Constants;
 using Buddy2Study.Infrastructure.DatabaseConnection;
 using Buddy2Study.Infrastructure.Interfaces;
 using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Buddy2Study.Infrastructure.Repositories
 {
@@ -24,93 +24,120 @@ namespace Buddy2Study.Infrastructure.Repositories
         public async Task<IEnumerable<Scholarships>> GetScholarshipsDetails(int id, string role)
         {
             string spName;
-            var parameters = new DynamicParameters();
+            object parameters;
 
             if (role?.ToLower() == "student")
             {
                 spName = SPNames.SP_GETSCHOLARSHIPBYSTUDENT;
-                parameters.Add("@StudentId", id, DbType.Int32);
+                parameters = new { StudentId = id };
             }
             else if (role?.ToLower() == "sponsor")
             {
                 spName = SPNames.SP_GETSCHOLARSHIPBYSPONSOR;
-                parameters.Add("@SponsorId", id, DbType.Int32);
+                parameters = new { SponsorId = id };
             }
             else
             {
                 throw new ArgumentException("Role must be 'student' or 'sponsor'.");
             }
 
-            var result = await _db.Connection.QueryAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
-            return result.ToList();
+            var result = await Task.Factory.StartNew(() =>
+                _db.Connection.Query<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure).ToList()
+            );
+
+            return result;
         }
 
         /// <inheritdoc/>
         public async Task<Scholarships> InsertScholarship(Scholarships scholarship)
         {
             var spName = SPNames.SP_INSERTSCHOLARSHIP;
-            var parameters = new DynamicParameters();
 
-            parameters.Add("@ScholarshipCode", scholarship.ScholarshipCode);
-            parameters.Add("@ScholarshipName", scholarship.ScholarshipName);
-            parameters.Add("@ScholarshipType", scholarship.ScholarshipType);
-            parameters.Add("@Description", scholarship.Description);
-            parameters.Add("@EligibilityCriteria", scholarship.EligibilityCriteria);
-            parameters.Add("@ApplicableCourses", scholarship.ApplicableCourses);
-            parameters.Add("@ApplicableDepartments", scholarship.ApplicableDepartments);
-            parameters.Add("@MinPercentageOrCGPA", scholarship.MinPercentageOrCGPA);
-            parameters.Add("@MaxFamilyIncome", scholarship.MaxFamilyIncome);
-            parameters.Add("@ScholarshipAmount", scholarship.ScholarshipAmount);
-            parameters.Add("@IsRenewable", scholarship.IsRenewable);
-            parameters.Add("@RenewalCriteria", scholarship.RenewalCriteria);
-            parameters.Add("@StartDate", scholarship.StartDate);
-            parameters.Add("@EndDate", scholarship.EndDate);
-            parameters.Add("@SponsorId", scholarship.SponsorId);
-            parameters.Add("@Status", scholarship.Status ?? "Active");
-            parameters.Add("@ScholarshipLimit", scholarship.ScholarshipLimit);
-            parameters.Add("@CreatedBy", scholarship.CreatedBy);
+            var parameters = new
+            {
+                ScholarshipCode = scholarship.ScholarshipCode,
+                ScholarshipName = scholarship.ScholarshipName,
+                ScholarshipType = string.IsNullOrEmpty(scholarship.ScholarshipType) ? null : scholarship.ScholarshipType,
+                Description = string.IsNullOrEmpty(scholarship.Description) ? null : scholarship.Description,
+                EligibilityCriteria = string.IsNullOrEmpty(scholarship.EligibilityCriteria) ? null : scholarship.EligibilityCriteria,
+                ApplicableCourses = string.IsNullOrEmpty(scholarship.ApplicableCourses) ? null : scholarship.ApplicableCourses,
+                ApplicableDepartments = string.IsNullOrEmpty(scholarship.ApplicableDepartments) ? null : scholarship.ApplicableDepartments,
+                MinPercentageOrCGPA = scholarship.MinPercentageOrCGPA, // Dapper automatically converts nullables to SQL NULL
+                MaxFamilyIncome = scholarship.MaxFamilyIncome,
+                ScholarshipAmount = scholarship.ScholarshipAmount,
+                IsRenewable = scholarship.IsRenewable,
+                RenewalCriteria = string.IsNullOrEmpty(scholarship.RenewalCriteria) ? null : scholarship.RenewalCriteria,
+                StartDate = scholarship.StartDate,
+                EndDate = scholarship.EndDate,
+                SponsorId = scholarship.SponsorId,
+                Status = scholarship.Status ?? "Active",
+                ScholarshipLimit = scholarship.ScholarshipLimit,
+                CreatedBy = scholarship.CreatedBy
+            };
 
-            return await _db.Connection.QueryFirstOrDefaultAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
+            var insertedData = await _db.Connection.QuerySingleOrDefaultAsync<Scholarships>(
+                spName,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return insertedData;
         }
 
         /// <inheritdoc/>
         public async Task<Scholarships> UpdateScholarship(Scholarships scholarship)
         {
             var spName = SPNames.SP_UPDATESCHOLARSHIP;
-            var parameters = new DynamicParameters();
 
-            parameters.Add("@Id", scholarship.Id);
-            parameters.Add("@ScholarshipCode", scholarship.ScholarshipCode);
-            parameters.Add("@ScholarshipName", scholarship.ScholarshipName);
-            parameters.Add("@ScholarshipType", scholarship.ScholarshipType);
-            parameters.Add("@Description", scholarship.Description);
-            parameters.Add("@EligibilityCriteria", scholarship.EligibilityCriteria);
-            parameters.Add("@ApplicableCourses", scholarship.ApplicableCourses);
-            parameters.Add("@ApplicableDepartments", scholarship.ApplicableDepartments);
-            parameters.Add("@MinPercentageOrCGPA", scholarship.MinPercentageOrCGPA);
-            parameters.Add("@MaxFamilyIncome", scholarship.MaxFamilyIncome);
-            parameters.Add("@ScholarshipAmount", scholarship.ScholarshipAmount);
-            parameters.Add("@IsRenewable", scholarship.IsRenewable);
-            parameters.Add("@RenewalCriteria", scholarship.RenewalCriteria);
-            parameters.Add("@StartDate", scholarship.StartDate);
-            parameters.Add("@EndDate", scholarship.EndDate);
-            parameters.Add("@SponsorId", scholarship.SponsorId);
-            parameters.Add("@Status", scholarship.Status ?? "Active");
-            parameters.Add("@ScholarshipLimit", scholarship.ScholarshipLimit);
-            parameters.Add("@ModifiedBy", scholarship.ModifiedBy);
+            var parameters = new
+            {
+                Id = scholarship.Id,
+                ScholarshipCode = scholarship.ScholarshipCode,
+                ScholarshipName = scholarship.ScholarshipName,
+                ScholarshipType = scholarship.ScholarshipType,
+                Description = scholarship.Description,
+                EligibilityCriteria = scholarship.EligibilityCriteria,
+                ApplicableCourses = scholarship.ApplicableCourses,
+                ApplicableDepartments = scholarship.ApplicableDepartments,
+                MinPercentageOrCGPA = scholarship.MinPercentageOrCGPA,
+                MaxFamilyIncome = scholarship.MaxFamilyIncome,
+                ScholarshipAmount = scholarship.ScholarshipAmount,
+                IsRenewable = scholarship.IsRenewable,
+                RenewalCriteria = scholarship.RenewalCriteria,
+                StartDate = scholarship.StartDate,
+                EndDate = scholarship.EndDate,
+                SponsorId = scholarship.SponsorId,
+                ModifiedBy = scholarship.ModifiedBy  // Only include what SP expects
+            };
+            await Task.Factory.StartNew(() =>
+                _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure)
+            );
 
-            return await _db.Connection.QueryFirstOrDefaultAsync<Scholarships>(spName, parameters, commandType: CommandType.StoredProcedure);
+            // Return the updated scholarship object from DB
+            var updated = await Task.Factory.StartNew(() =>
+                _db.Connection.QuerySingleOrDefault<Scholarships>(
+                    "SELECT * FROM tbl_ScholarshipMaster WHERE Id = @Id",
+                    new { Id = scholarship.Id }
+                )
+            );
+
+            return updated;
         }
 
         /// <inheritdoc/>
         public async Task DeleteScholarship(int id, string modifiedBy)
         {
-            var spName = SPNames.SP_DELETESCHOLARSHIP; // You need to add this constant
-            var parameters = new DynamicParameters();
-            parameters.Add("@Id", id);
-            parameters.Add("@ModifiedBy", modifiedBy);
+            var spName = SPNames.SP_DELETESCHOLARSHIP;
 
-            await _db.Connection.ExecuteAsync(spName, parameters, commandType: CommandType.StoredProcedure);
+            var parameters = new
+            {
+                Id = id,
+                ModifiedBy = modifiedBy
+            };
+
+            await Task.Factory.StartNew(() =>
+                _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure)
+            );
         }
     }
 }

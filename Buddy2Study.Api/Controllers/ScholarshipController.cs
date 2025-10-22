@@ -102,13 +102,12 @@ namespace Buddy2Study.Api.Controllers
 
             try
             {
-                var existing = await _scholarshipService.GetScholarshipsDetails(scholarshipDto.Id, "sponsor");
-
-                if (!existing.Any())
-                    return NotFound($"No scholarship found with ID {scholarshipDto.Id}.");
-
-                await _scholarshipService.UpdateScholarship(scholarshipDto);
-                return NoContent();
+                var updatedScholarship = await _scholarshipService.UpdateScholarship(scholarshipDto);
+                return Ok(updatedScholarship); // Return the updated record
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
@@ -120,6 +119,7 @@ namespace Buddy2Study.Api.Controllers
                 });
             }
         }
+
         /// <summary>
         /// Delete a scholarship by ID
         /// </summary>

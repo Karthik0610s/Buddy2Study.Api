@@ -37,10 +37,23 @@ namespace Buddy2Study.Application.Services
             return _mapper.Map<ScholarshipDto>(inserted);
         }
 
-        public async Task UpdateScholarship(ScholarshipDto scholarshipDto)
+        /// <summary>
+        /// Update an existing scholarship and return updated record
+        /// </summary>
+        public async Task<ScholarshipDto> UpdateScholarship(ScholarshipDto scholarshipDto)
         {
+            if (scholarshipDto == null || scholarshipDto.Id <= 0)
+                throw new ArgumentException("Invalid scholarship data.", nameof(scholarshipDto));
+
             var scholarship = _mapper.Map<Scholarships>(scholarshipDto);
-            await _scholarshipRepository.UpdateScholarship(scholarship);
+
+            // Update in DB and fetch updated record
+            var updatedScholarship = await _scholarshipRepository.UpdateScholarship(scholarship);
+
+            if (updatedScholarship == null)
+                throw new KeyNotFoundException($"No scholarship found with ID {scholarshipDto.Id}");
+
+            return _mapper.Map<ScholarshipDto>(updatedScholarship);
         }
 
         public async Task<bool> DeleteScholarship(int id, string modifiedBy)

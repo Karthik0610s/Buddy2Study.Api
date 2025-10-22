@@ -8,7 +8,7 @@ namespace Buddy2Study.Application.Interfaces
     {
         Task<IEnumerable<ScholarshipDto>> GetScholarshipsDetails(int id, string role);
         Task<ScholarshipDto> InsertScholarship(ScholarshipDto scholarship);
-        Task UpdateScholarship(ScholarshipDto scholarship);
+        Task<ScholarshipDto> UpdateScholarship(ScholarshipDto scholarship);
         Task<bool> DeleteScholarship(int id, string modifiedBy);
     }
 }
