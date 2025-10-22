@@ -25,6 +25,18 @@ namespace Buddy2Study.Application.Services
             var scholarships = await _scholarshipRepository.GetScholarshipsDetails(id, role);
             return _mapper.Map<IEnumerable<ScholarshipDto>>(scholarships);
         }
+        public async Task<ScholarshipDto> GetScholarshipById(int id)
+        {
+            if (id <= 0)
+                throw new ArgumentException("Invalid scholarship ID.", nameof(id));
+
+            var scholarship = await _scholarshipRepository.GetScholarshipById(id);
+
+            if (scholarship == null)
+                throw new KeyNotFoundException($"No scholarship found with ID {id}.");
+
+            return _mapper.Map<ScholarshipDto>(scholarship);
+        }
 
         public async Task<ScholarshipDto> InsertScholarship(ScholarshipDto scholarshipDto)
         {
