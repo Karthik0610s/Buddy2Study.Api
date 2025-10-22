@@ -94,36 +94,29 @@ namespace Buddy2Study.Infrastructure.Repositories
                 Id = scholarship.Id,
                 ScholarshipCode = scholarship.ScholarshipCode,
                 ScholarshipName = scholarship.ScholarshipName,
-                ScholarshipType = scholarship.ScholarshipType,
-                Description = scholarship.Description,
-                EligibilityCriteria = scholarship.EligibilityCriteria,
-                ApplicableCourses = scholarship.ApplicableCourses,
-                ApplicableDepartments = scholarship.ApplicableDepartments,
+                ScholarshipType = string.IsNullOrEmpty(scholarship.ScholarshipType) ? null : scholarship.ScholarshipType,
+                Description = string.IsNullOrEmpty(scholarship.Description) ? null : scholarship.Description,
+                EligibilityCriteria = string.IsNullOrEmpty(scholarship.EligibilityCriteria) ? null : scholarship.EligibilityCriteria,
+                ApplicableCourses = string.IsNullOrEmpty(scholarship.ApplicableCourses) ? null : scholarship.ApplicableCourses,
+                ApplicableDepartments = string.IsNullOrEmpty(scholarship.ApplicableDepartments) ? null : scholarship.ApplicableDepartments,
                 MinPercentageOrCGPA = scholarship.MinPercentageOrCGPA,
                 MaxFamilyIncome = scholarship.MaxFamilyIncome,
                 ScholarshipAmount = scholarship.ScholarshipAmount,
                 IsRenewable = scholarship.IsRenewable,
-                RenewalCriteria = scholarship.RenewalCriteria,
+                RenewalCriteria = string.IsNullOrEmpty(scholarship.RenewalCriteria) ? null : scholarship.RenewalCriteria,
                 StartDate = scholarship.StartDate,
                 EndDate = scholarship.EndDate,
                 SponsorId = scholarship.SponsorId,
-                ModifiedBy = scholarship.ModifiedBy  // Only include what SP expects
+                Status = scholarship.Status ?? "Active",
+                ScholarshipLimit = scholarship.ScholarshipLimit,
+                ModifiedBy = scholarship.ModifiedBy
             };
-            await Task.Factory.StartNew(() =>
-                _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure)
-            );
 
-            // Return the updated scholarship object from DB
-            var updated = await Task.Factory.StartNew(() =>
-                _db.Connection.QuerySingleOrDefault<Scholarships>(
-                    "SELECT * FROM tbl_ScholarshipMaster WHERE Id = @Id",
-                    new { Id = scholarship.Id }
-                )
-            );
+            await _db.Connection.ExecuteAsync(spName, parameters, commandType: CommandType.StoredProcedure);
 
-            return updated;
+            // Return the same object if needed
+            return scholarship;
         }
-
         /// <inheritdoc/>
         public async Task DeleteScholarship(int id, string modifiedBy)
         {
