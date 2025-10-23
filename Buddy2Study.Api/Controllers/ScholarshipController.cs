@@ -206,11 +206,11 @@ namespace Buddy2Study.Api.Controllers
             }
         }
         /// </summary>
-       /* [HttpGet("downloadFiles/{id}")]
+        [HttpGet("downloadFiles/{id}")]
         public async Task<IActionResult> DownloadFiles(int id)
         {
-            var result = await _scholarshipService.GetScholarshipsApplicationForm(id);
-            var scholarship = result.FirstOrDefault();
+            var scholarship = await _scholarshipService.GetScholarshipById(id);
+            //var scholarship = result.FirstOrDefault();
 
             if (scholarship == null)
                 return NotFound("Scholarship not found.");
@@ -233,6 +233,6 @@ namespace Buddy2Study.Api.Controllers
 
             return File(compressedFileStream.ToArray(), "application/zip", zipName);
         }
-       */
+       
     }
 }
