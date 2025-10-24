@@ -144,5 +144,31 @@ namespace Buddy2Study.Infrastructure.Repositories
                 _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure)
             );
         }
+        public async Task<IEnumerable<ScholarshipStatus>> GetScholarshipsByStatus(string statusType)
+        {
+            var spName = SPNames.SP_GETSCHOLARSHIPSBYSTATUS; // SP name
+            var parameters = new { StatusType = statusType };
+
+            var result = await _db.Connection.QueryAsync<ScholarshipStatus>(
+                spName,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
+
+        public async Task<IEnumerable<FeaturedScholarship>> GetFeaturedScholarships()
+        {
+            var spName = SPNames.SP_GETFEATUREDSCHOLARSHIPS;
+
+            var result = await _db.Connection.QueryAsync<FeaturedScholarship>(
+                spName,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
+
     }
 }
