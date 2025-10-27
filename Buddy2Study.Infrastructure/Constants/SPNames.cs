@@ -36,6 +36,9 @@ namespace Buddy2Study.Infrastructure.Constants
         public const string SP_UPDATESCHOLARSHIP = "sp_UpdateScholarshipMaster";
         public const string SP_DELETESCHOLARSHIP = "sp_DeleteScholarshipMaster";
 
+        public const string SP_GETSCHOLARSHIPSBYSTATUS = "sp_GetScholarshipsByStatus";
+
+        public const string SP_GETFEATUREDSCHOLARSHIPS = "sp_GetFeaturedScholarships";
         public const string SP_GETSCHOLARSHIPBYID = "sp_GetScholarshipById";
 
 

@@ -233,6 +233,76 @@ namespace Buddy2Study.Api.Controllers
 
             return File(compressedFileStream.ToArray(), "application/zip", zipName);
         }
-       
+        [HttpGet("status")]
+        public async Task<IActionResult> GetByStatus([FromQuery] string statusType)
+        {
+            _logger.LogInformation("{MethodName} called with StatusType {StatusType}", nameof(GetByStatus), statusType);
+
+            if (string.IsNullOrEmpty(statusType))
+                return BadRequest("StatusType parameter is required.");
+
+            try
+            {
+                var result = await _scholarshipService.GetScholarshipsByStatus(statusType);
+
+                if (result == null || !result.Any())
+                    return NotFound($"No scholarships found for StatusType '{statusType}'.");
+
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "SQL Error in {MethodName}", nameof(GetByStatus));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Database Error",
+                    Detail = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in {MethodName}", nameof(GetByStatus));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Internal Server Error",
+                    Detail = ex.Message
+                });
+            }
+        }
+
+        // GET: api/scholarships/featured
+        [HttpGet("featured")]
+        public async Task<IActionResult> GetFeatured()
+        {
+            _logger.LogInformation("{MethodName} called", nameof(GetFeatured));
+
+            try
+            {
+                var result = await _scholarshipService.GetFeaturedScholarships();
+
+                if (result == null || !result.Any())
+                    return NotFound("No featured scholarships found.");
+
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex, "SQL Error in {MethodName}", nameof(GetFeatured));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Database Error",
+                    Detail = ex.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in {MethodName}", nameof(GetFeatured));
+                return StatusCode(StatusCodes.Status500InternalServerError, new ProblemDetails
+                {
+                    Title = "Internal Server Error",
+                    Detail = ex.Message
+                });
+            }
+        }
     }
 }

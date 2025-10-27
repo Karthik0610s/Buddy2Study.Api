@@ -47,9 +47,10 @@ namespace Buddy2Study.Infrastructure.Repositories
 
             return result;
         }
+
         public async Task<Scholarships> GetScholarshipById(int id)
         {
-            var spName = SPNames.SP_GETSCHOLARSHIPBYID; // make sure this SP name exists in SPNames
+            var spName = SPNames.SP_GETSCHOLARSHIPBYID;
             var parameters = new { Id = id };
 
             var result = await _db.Connection.QuerySingleOrDefaultAsync<Scholarships>(
@@ -60,6 +61,7 @@ namespace Buddy2Study.Infrastructure.Repositories
 
             return result;
         }
+
         /// <inheritdoc/>
         public async Task<Scholarships> InsertScholarship(Scholarships scholarship)
         {
@@ -74,7 +76,7 @@ namespace Buddy2Study.Infrastructure.Repositories
                 EligibilityCriteria = string.IsNullOrEmpty(scholarship.EligibilityCriteria) ? null : scholarship.EligibilityCriteria,
                 ApplicableCourses = string.IsNullOrEmpty(scholarship.ApplicableCourses) ? null : scholarship.ApplicableCourses,
                 ApplicableDepartments = string.IsNullOrEmpty(scholarship.ApplicableDepartments) ? null : scholarship.ApplicableDepartments,
-                MinPercentageOrCGPA = scholarship.MinPercentageOrCGPA, // Dapper automatically converts nullables to SQL NULL
+                MinPercentageOrCGPA = scholarship.MinPercentageOrCGPA,
                 MaxFamilyIncome = scholarship.MaxFamilyIncome,
                 ScholarshipAmount = scholarship.ScholarshipAmount,
                 IsRenewable = scholarship.IsRenewable,
@@ -84,7 +86,12 @@ namespace Buddy2Study.Infrastructure.Repositories
                 SponsorId = scholarship.SponsorId,
                 Status = scholarship.Status ?? "Active",
                 ScholarshipLimit = scholarship.ScholarshipLimit,
-                CreatedBy = scholarship.CreatedBy
+                CreatedBy = scholarship.CreatedBy,
+                Documents = scholarship.Documents,
+                Eligibility = scholarship.Eligibility,
+                WebportaltoApply = scholarship.WebportaltoApply,
+                CanApply = scholarship.CanApply,
+                ContactDetails = scholarship.ContactDetails
             };
 
             var insertedData = await _db.Connection.QuerySingleOrDefaultAsync<Scholarships>(
@@ -121,14 +128,19 @@ namespace Buddy2Study.Infrastructure.Repositories
                 SponsorId = scholarship.SponsorId,
                 Status = scholarship.Status ?? "Active",
                 ScholarshipLimit = scholarship.ScholarshipLimit,
-                ModifiedBy = scholarship.ModifiedBy
+                ModifiedBy = scholarship.ModifiedBy,
+                Documents = scholarship.Documents,
+                Eligibility = scholarship.Eligibility,
+                WebportaltoApply = scholarship.WebportaltoApply,
+                CanApply = scholarship.CanApply,
+                ContactDetails = scholarship.ContactDetails
             };
 
             await _db.Connection.ExecuteAsync(spName, parameters, commandType: CommandType.StoredProcedure);
 
-            // Return the same object if needed
             return scholarship;
         }
+
         /// <inheritdoc/>
         public async Task DeleteScholarship(int id, string modifiedBy)
         {
@@ -144,5 +156,31 @@ namespace Buddy2Study.Infrastructure.Repositories
                 _db.Connection.Execute(spName, parameters, commandType: CommandType.StoredProcedure)
             );
         }
+        public async Task<IEnumerable<ScholarshipStatus>> GetScholarshipsByStatus(string statusType)
+        {
+            var spName = SPNames.SP_GETSCHOLARSHIPSBYSTATUS; // SP name
+            var parameters = new { StatusType = statusType };
+
+            var result = await _db.Connection.QueryAsync<ScholarshipStatus>(
+                spName,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
+
+        public async Task<IEnumerable<FeaturedScholarship>> GetFeaturedScholarships()
+        {
+            var spName = SPNames.SP_GETFEATUREDSCHOLARSHIPS;
+
+            var result = await _db.Connection.QueryAsync<FeaturedScholarship>(
+                spName,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
+
     }
 }

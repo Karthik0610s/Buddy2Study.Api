@@ -73,5 +73,17 @@ namespace Buddy2Study.Application.Services
             await _scholarshipRepository.DeleteScholarship(id, modifiedBy);
             return true;
         }
+        public async Task<IEnumerable<ScholarshipStatusDto>> GetScholarshipsByStatus(string statusType)
+        {
+            var scholarships = await _scholarshipRepository.GetScholarshipsByStatus(statusType);
+            return _mapper.Map<IEnumerable<ScholarshipStatusDto>>(scholarships);
+        }
+
+        public async Task<IEnumerable<FeaturedScholarshipDto>> GetFeaturedScholarships()
+        {
+            var scholarships = await _scholarshipRepository.GetFeaturedScholarships();
+            return _mapper.Map<IEnumerable<FeaturedScholarshipDto>>(scholarships);
+        }
+
     }
 }
