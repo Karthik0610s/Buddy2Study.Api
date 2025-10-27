@@ -8,6 +8,6 @@ namespace Buddy2Study.Application.Interfaces
         // Normal user login
         Task<TokenDto> LoginAsync(string username, string password);
 
-        
+        Task<TokenDto> LoginOrRegisterExternalUserAsync(string? email, string? name, string provider);
     }
 }
