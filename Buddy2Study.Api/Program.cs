@@ -10,6 +10,13 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using AspNet.Security.OAuth.LinkedIn;
+using AspNet.Security.OAuth.Instagram;
+using AspNet.Security.OAuth.Twitter;
+using AspNet.Security.OAuth.Pinterest;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
 
 using System.Text;
 
@@ -68,7 +75,38 @@ services.AddAuthentication(opt =>
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWTSettings:Audience"]
     };
+}).AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["OAuth:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["OAuth:Google:ClientSecret"];
+    options.CallbackPath = "/api/auth/google/callback";
+})
+.AddFacebook(options =>
+{
+    options.AppId = builder.Configuration["OAuth:Facebook:AppId"];
+    options.AppSecret = builder.Configuration["OAuth:Facebook:AppSecret"];
+    options.CallbackPath = "/api/auth/facebook/callback";
+})
+.AddLinkedIn(options =>
+{
+    options.ClientId = builder.Configuration["OAuth:LinkedIn:ClientId"];
+    options.ClientSecret = builder.Configuration["OAuth:LinkedIn:ClientSecret"];
+})
+.AddInstagram(options =>
+{
+    options.ClientId = builder.Configuration["OAuth:Instagram:ClientId"];
+    options.ClientSecret = builder.Configuration["OAuth:Instagram:ClientSecret"];
+})
+.AddTwitter(options =>
+{
+    options.ConsumerKey = builder.Configuration["OAuth:Twitter:ClientId"];
+    options.ConsumerSecret = builder.Configuration["OAuth:Twitter:ClientSecret"];
 });
+//.AddPinterest(options =>
+//{
+//    options.ClientId = builder.Configuration["OAuth:Pinterest:ClientId"];
+//    options.ClientSecret = builder.Configuration["OAuth:Pinterest:ClientSecret"];
+//}); 
 services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Funds4Education.API", Version = "v1" });

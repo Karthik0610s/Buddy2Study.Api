@@ -44,6 +44,28 @@ namespace Buddy2Study.Application.Services
             string roleName = user.RoleName ?? "Unknown";
             return GenerateToken(user.Id, user.UserName, user.Name, roleId,roleName,user.UserId);
         }
+        public async Task<TokenDto> LoginOrRegisterExternalUserAsync(string? email, string? name, string provider)
+        {
+            // 1. Check if the user exists in DB by email
+            var user = await _userRepository.GetByEmailAsync(email);
+
+            // 2. If not, create a new user record
+            if (user == null)
+            {
+                user = new User
+                {
+                    Username = email ?? name ?? Guid.NewGuid().ToString(),
+                    EmailAddress = email,
+                    Name = name,
+                    AuthProvider = provider,
+                    RoleId = 1, // default role (student)
+                };
+                await _userRepository.GetUsersDetails(user);
+            }
+
+            // 3. Generate JWT token (reuse your existing logic)
+            return await GenerateToken(user);
+        }
 
         // JWT token generation
         private TokenDto GenerateToken(int id, string userName, string name, int roleId,string roleName,int userId)

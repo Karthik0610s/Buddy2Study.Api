@@ -1,9 +1,11 @@
 ﻿using Buddy2Study.Application.Dtos;
 using Buddy2Study.Application.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Buddy2Study.Api.Controllers
 {
@@ -49,7 +51,36 @@ namespace Buddy2Study.Api.Controllers
                 });
             }
         }
+        [AllowAnonymous]
+        [HttpGet("{provider}/login")]
+        public IActionResult ExternalLogin([FromRoute] string provider, string? returnUrl = "/")
+        {
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Auth", new { provider, returnUrl });
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, provider);
+        }
 
-        
+        [AllowAnonymous]
+        [HttpGet("{provider}/callback")]
+        public async Task<IActionResult> ExternalLoginCallback(string provider, string? returnUrl = "/")
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (!result.Succeeded)
+                return BadRequest("External authentication failed.");
+
+            var claims = result.Principal?.Identities.FirstOrDefault()?.Claims;
+            var email = claims?.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
+            var name = claims?.FirstOrDefault(c => c.Type.Contains("name"))?.Value;
+
+            // If user doesn't exist, register or create them
+            var token = await _authService.LoginOrRegisterExternalUserAsync(email, name, provider);
+
+            // Redirect back to React frontend with token in query
+            var clientUrl = _configuration["Frontend:BaseUrl"];
+            return Redirect($"{clientUrl}/login-success?token={token.Token}&name={Uri.EscapeDataString(name ?? "")}");
+        }
+
+
     }
 }

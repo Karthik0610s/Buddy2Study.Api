@@ -8,6 +8,12 @@
 
   <ItemGroup>
     
+    <PackageReference Include="AspNet.Security.OAuth.Instagram" Version="9.4.1" />
+    
+    <PackageReference Include="AspNet.Security.OAuth.LinkedIn" Version="9.4.1" />
+    
+    <PackageReference Include="AspNet.Security.OAuth.Twitter" Version="9.4.1" />
+    
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
@@ -15,6 +21,12 @@
     <PackageReference Include="BouncyCastle" Version="1.8.9" />
     
     <PackageReference Include="Dapper" Version="2.1.66" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="9.0.10" />
+    
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.10" />
     
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />

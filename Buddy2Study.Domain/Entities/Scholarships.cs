@@ -34,4 +34,27 @@ namespace Buddy2Study.Domain.Entities
         public string? CanApply { get; set; }                   // nvarchar(800) NULL
         public string? ContactDetails { get; set; }             // nvarchar(800) NULL
     }
+    public class ScholarshipStatus
+    {
+        public int Id { get; set; }
+        public string ScholarshipCode { get; set; }
+        public string Name { get; set; }
+        public string Eligibility { get; set; }
+        public decimal Amount { get; set; }
+        public string LogoName { get; set; }
+        public string LogoPath { get; set; }
+        public DateTime LastUpdatedDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string DaysToGo { get; set; }
+    }
+
+    public class FeaturedScholarship
+    {
+        public string ScholarshipCode { get; set; }
+        public string ScholarshipName { get; set; }
+        public string LogoName { get; set; }
+        public string LogoPath { get; set; }
+        public DateTime Deadline { get; set; }
+        public string FeaturedType { get; set; }
+    }
 }
