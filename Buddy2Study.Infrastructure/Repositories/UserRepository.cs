@@ -13,18 +13,32 @@ namespace Buddy2Study.Infrastructure.Repositories
 
         public UserRepository(IDataBaseConnection db)
         {
-            this._db = db;
+            _db = db;
         }
 
         /// <inheritdoc/>
         public async Task<IEnumerable<Users>> GetUsersDetails(int? id)
         {
             var spName = SPNames.SP_GETUSERSALL; // Update the stored procedure name if necessary
-            return await Task.Factory.StartNew(() => _db.Connection.Query<Users>(spName,
-                new { Id = id }, commandType: CommandType.StoredProcedure).ToList());
+            return await Task.Factory.StartNew(() =>
+                _db.Connection.Query<Users>(spName,
+                    new { Id = id },
+                    commandType: CommandType.StoredProcedure
+                ).ToList()
+            );
         }
 
-       
-
+        /// <inheritdoc/>
+        public async Task<Users?> GetByEmailAsync(string email)
+        {
+            var spName = SPNames.SP_GETUSERBYEMAIL; // ✅ Create this stored procedure constant in SPNames.cs
+            return await Task.Factory.StartNew(() =>
+                _db.Connection.QueryFirstOrDefault<Users>(
+                    spName,
+                    new { Email = email },
+                    commandType: CommandType.StoredProcedure
+                )
+            );
+        }
     }
 }

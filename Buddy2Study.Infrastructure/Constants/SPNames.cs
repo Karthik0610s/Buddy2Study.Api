@@ -14,6 +14,8 @@ namespace Buddy2Study.Infrastructure.Constants
         public const string SP_DELETESCHOLARSHIPAPPLICATIONFORM = "[sp_DeleteScholarshipApplicationSimple]";
 
         public static string SP_GETUSERSALL = "sp_GetUsersAll";
+        public static string SP_GETUSERBYEMAIL = "sp_GetUsersAll";
+
 
         public static string SP_INSERTSTUDENT = "sp_InsertStudent";
         public static string SP_UPDATESTUDENT = "sp_UpdateStudent";
