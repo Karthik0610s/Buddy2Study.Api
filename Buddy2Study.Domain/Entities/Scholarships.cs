@@ -14,7 +14,7 @@ namespace Buddy2Study.Domain.Entities
         public string? ApplicableDepartments { get; set; }      // varchar(250) NULL
         public decimal? MinPercentageOrCGPA { get; set; }       // decimal(4,2) NULL
         public decimal? MaxFamilyIncome { get; set; }           // decimal(12,2) NULL
-        public string? ScholarshipAmount { get; set; }          // nvarchar(300) NULL
+        public string Benefits { get; set; }        // nvarchar(300) NULL
         public bool? IsRenewable { get; set; }                  // bit NULL (default 0)
         public string? RenewalCriteria { get; set; }            // varchar(300) NULL
         public DateTime? StartDate { get; set; }                // date NULL

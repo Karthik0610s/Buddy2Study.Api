@@ -36,6 +36,7 @@ namespace Buddy2Study.Infrastructure.Repositories
 
         public async Task<Sponsors> InsertSponsorDetails(Sponsors Sponsors)
         {
+            
             var spName = SPNames.SP_INSERTSPONSOR; // Name of your stored procedure
                                                    // Define parameters for the stored procedure
 

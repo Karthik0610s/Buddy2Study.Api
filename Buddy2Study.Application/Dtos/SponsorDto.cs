@@ -1,18 +1,20 @@
 ﻿public class SponsorDto
 {
     public int Id { get; set; }
+
+    // Required fields for insert
     public string OrganizationName { get; set; }
     public string OrganizationType { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
     public string Website { get; set; }
 
-    // UI fields
-    public string ContactPerson { get; set; }
-    public string Address { get; set; }
-    public string Budget { get; set; }
-    public string StudentCriteria { get; set; }
-    public string StudyLevels { get; set; }
+    // Optional UI fields
+    public string? ContactPerson { get; set; }
+    public string? Address { get; set; }
+    public string? Budget { get; set; }
+    public string? StudentCriteria { get; set; }
+    public string? StudyLevels { get; set; }
 
     // Only for insert
     public string? Username { get; set; }

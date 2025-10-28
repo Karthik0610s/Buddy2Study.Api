@@ -5,27 +5,29 @@ namespace Buddy2Study.Domain.Entities
     public class Sponsors
     {
         public int Id { get; set; }
+
+        // Core fields (required for insert)
         public string OrganizationName { get; set; }
         public string OrganizationType { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }
 
-        // Newly added properties for the UI/database
+        // Optional UI fields (NOT required for insert)
         public string? ContactPerson { get; set; }
         public string? Address { get; set; }
-        public string? Budget { get; set; }
+        public decimal? Budget { get; set; }   // use decimal? for numeric budget
         public string? StudentCriteria { get; set; }
         public string? StudyLevels { get; set; }
 
-        // Login-related fields
-        public string Username { get; set; }
-        public string PasswordHash { get; set; }
-        public int RoleId { get; set; }
+        // Insert-related
+        public string? Username { get; set; }
+        public string? PasswordHash { get; set; }
+        public int? RoleId { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? CreatedDate { get; set; }
 
-        // Audit fields
-        public string CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
+        // Update-related
         public string? ModifiedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
     }

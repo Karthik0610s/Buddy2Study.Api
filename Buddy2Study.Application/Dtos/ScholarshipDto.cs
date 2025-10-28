@@ -16,9 +16,8 @@ namespace Buddy2Study.Application.Dtos
         public decimal? MinPercentageOrCGPA { get; set; }      // Nullable
         public decimal? MaxFamilyIncome { get; set; }          // Nullable
 
-        
-        public string? ScholarshipAmount { get; set; }         // Nullable
 
+        public string? Benefits { get; set; }
         public bool IsRenewable { get; set; }                  // Not nullable
         public string? RenewalCriteria { get; set; }           // Nullable
         public DateTime? StartDate { get; set; }               // Nullable
